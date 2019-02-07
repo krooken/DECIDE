@@ -5,4 +5,9 @@ def decide(
         lcm,
         puv
 ):
-    return False
+
+    result = True
+    for pue in puv:
+        result &= not pue
+
+    return result
