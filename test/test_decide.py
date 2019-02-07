@@ -37,7 +37,7 @@ class DecideTestCase(unittest.TestCase):
         self.assertFalse(decide.decide(numpoints, points, parameters, lcm, puv))
 
     def test_fuv_bypass(self):
-        # Test that setting all values in the PUM (Preliminary Unlocking Vector) to false (i.e. bypass checks) results
+        # Test that setting all values in the PUV (Preliminary Unlocking Vector) to false (i.e. bypass checks) results
         # in a launch decision.
 
         numpoints = 3
