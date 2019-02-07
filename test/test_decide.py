@@ -31,7 +31,7 @@ class DecideTestCase(unittest.TestCase):
             'length2': 0.0,
             'area2': 1.0
         }
-        lcm = np.zeros(15) + 3
+        lcm = np.full((15,15), 1)
         puv = np.full(15, True)
 
         self.assertFalse(decide.decide(numpoints, points, parameters, lcm, puv))
