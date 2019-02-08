@@ -21,3 +21,10 @@ class CheckLic0TestCase(unittest.TestCase):
 
         self.run_function()
         self.assertTrue(self.result)
+
+    def test_non_consecutive_points_apart(self):
+
+        self.points = np.array([(0.0,0.0), (9.0,0.0), (15.0,0.0)])
+
+        self.run_function()
+        self.assertFalse(self.result)
