@@ -17,6 +17,12 @@ def decide(
         if (points[i+1][0] - points[i][0])**2 + (points[i+1][1] - points[i][1])**2 > parameters['length1']**2:
             cmv[0] = True
 
+    # Populate the Preliminary Unlocking Matrix
+    # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
+    # The LCM and the CMV decide the boolean values in the Preliminary Unlocking Matrix.
+    # A 1 (ANDD) at position [i,j] in the LCM means that PUM[i,j] should be set to (LICi AND LICj)
+    # A 2 (ORR)at -"- should be set to (LICi OR LICj)
+    # A 3 (NOTUSED) at -"- should be set to True
     pum = np.full((15,15), False)
 
     for row in range(15):
