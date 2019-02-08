@@ -50,6 +50,7 @@ def decide(
         else:
             fuv[row] = True
 
+    # Calculating the final launch decision by checking whether all elements in the FUV are true
     result = True
     for final_unlocking_element in fuv:
         result &= final_unlocking_element
