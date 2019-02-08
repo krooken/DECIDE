@@ -42,6 +42,7 @@ def decide(
     fuv = np.full(15, False)
     for row in range(15):
         if puv[row]:
+            # This LIC shall be used, so loop through the corresponding row of PUM and check whether all values are true
             r = True
             for col in range(15):
                 r &= pum[row,col]
