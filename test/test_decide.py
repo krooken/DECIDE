@@ -50,6 +50,17 @@ class DecideTestCase(unittest.TestCase):
         self.run_function()
         self.assertTrue(self.result)
 
+    def test_lic1_points_apart(self):
+        self.points[2] = (11.0, 1.0)
+        self.lcm[0,0] = 1
+        self.lcm[0,1] = 2
+        self.lcm[0,2:] = 3
+        self.puv[1:] = False
+
+        self.run_function()
+
+        self.assertTrue(self.result)
+
     def run_function(self):
         # A helper function that runs the function under test with the indata from the instance variables.
         # The result is stored in an instance variable. This way interface changes are done in one place and not in
