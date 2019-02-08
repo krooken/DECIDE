@@ -10,8 +10,9 @@ def decide(
 
     cmv = np.full(15, False)
 
-    # Launch Interception Criteria 0
+    # Launch Interception Conditions 0
     # If two consecutive points are further apart than length1, then LIC0 is true.
+    # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
     for i in range(len(points)-1):
         if (points[i+1][0] - points[i][0])**2 + (points[i+1][1] - points[i][1])**2 > parameters['length1']**2:
             cmv[0] = True
