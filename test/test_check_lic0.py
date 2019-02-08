@@ -2,7 +2,6 @@ import unittest
 import decide
 from decide import decide
 import numpy as np
-import math
 
 class CheckLic0TestCase(unittest.TestCase):
 
