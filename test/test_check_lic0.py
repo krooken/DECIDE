@@ -14,3 +14,10 @@ class CheckLic0TestCase(unittest.TestCase):
     def run_function(self):
 
         self.result = decide.check_lic0(self.points, self.parameters)
+
+    def test_consecutive_points_apart(self):
+
+        self.points = np.array([(0.0,0.0), (1.0,0.0), (11.0,1.0)])
+
+        self.run_function()
+        self.assertTrue(self.result)
