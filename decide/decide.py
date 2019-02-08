@@ -34,6 +34,11 @@ def decide(
             else:
                 pum[row,col] = True
 
+    # Populate the Final Unlocking Vector
+    # The FUV is set depending on the PUM and the Preliminary Unlocking Vector
+    # If PUV[i] is set to true, then LICi should be used when determining whether a launch should be performed.
+    # If LICi is to be used, then FUV[i] is set to true if the ith row of PUM only consists of true entries.
+    # If FUV[i] is set to false, then LICi shall not be used to suppress a launch, and the value of FUV[i] is true.
     fuv = np.full(15, False)
     for row in range(15):
         if puv[row]:
