@@ -8,14 +8,10 @@ def decide(
         puv
 ):
 
-    cmv = np.full(15, False)
-
-    # Launch Interception Conditions 0
-    # If two consecutive points are further apart than length1, then LIC0 is true.
+    # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
-    for i in range(len(points)-1):
-        if (points[i+1][0] - points[i][0])**2 + (points[i+1][1] - points[i][1])**2 > parameters['length1']**2:
-            cmv[0] = True
+    cmv = np.full(15, False)
+    cmv[0] = check_lic0(points, parameters)
 
     # Populate the Preliminary Unlocking Matrix
     # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
@@ -54,5 +50,16 @@ def decide(
     result = True
     for final_unlocking_element in fuv:
         result &= final_unlocking_element
+
+    return result
+
+def check_lic0(points, parameters):
+
+    # Launch Interception Conditions 0
+    # If two consecutive points are further apart than length1, then LIC0 is true.
+    result = False
+    for i in range(len(points)-1):
+        if (points[i+1][0] - points[i][0])**2 + (points[i+1][1] - points[i][1])**2 > parameters['length1']**2:
+            result = True
 
     return result
