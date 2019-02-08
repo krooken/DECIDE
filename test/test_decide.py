@@ -38,8 +38,8 @@ class DecideTestCase(unittest.TestCase):
     def test_negative_decision(self):
         # Test that an input which does not fulfill the conditions will give a negative answer.
 
-
-        self.assertFalse(decide.decide(self.numpoints, self.points, self.parameters, self.lcm, self.puv))
+        self.run_function()
+        self.assertFalse(self.result)
 
     def test_fuv_bypass(self):
         # Test that setting all values in the PUV (Preliminary Unlocking Vector) to false (i.e. bypass checks) results
@@ -47,4 +47,13 @@ class DecideTestCase(unittest.TestCase):
 
         self.puv = np.full(15, False)
 
-        self.assertTrue(decide.decide(self.numpoints, self.points, self.parameters, self.lcm, self.puv))
+        self.run_function()
+        self.assertTrue(self.result)
+
+    def run_function(self):
+        # A helper function that runs the function under test with the indata from the instance variables.
+        # The result is stored in an instance variable. This way interface changes are done in one place and not in
+        # every test method.
+
+        self.result = decide.decide(self.numpoints, self.points, self.parameters, self.lcm, self.puv)
+
