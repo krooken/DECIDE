@@ -7,7 +7,7 @@ def decide(
 ):
 
     result = True
-    for pue in puv:
-        result &= not pue
+    for preliminary_unlocking_element in puv:
+        result &= not preliminary_unlocking_element
 
     return result
