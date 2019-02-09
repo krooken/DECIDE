@@ -59,7 +59,12 @@ def check_lic0(points, parameters):
     # If two consecutive points are further apart than length1, then LIC0 is true.
     result = False
     for i in range(len(points)-1):
-        if (points[i+1][0] - points[i][0])**2 + (points[i+1][1] - points[i][1])**2 > parameters['length1']**2:
+        if point_distance(points[i],points[i+1]) > parameters['length1']:
             result = True
 
     return result
+
+def point_distance(point1,point2):
+
+    # Calculate the euclidian distance between two points
+    return ( (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2 )**0.5
