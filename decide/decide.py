@@ -12,9 +12,10 @@ def decide(
 
     # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
+    launch_interception_conditions = LaunchInterceptionConditions(points,parameters)
     conditions_met_vector = np.full(LICS, False)
-    conditions_met_vector[0] = check_lic0(points, parameters)
-    conditions_met_vector[4] = check_lic4(points, parameters)
+    conditions_met_vector[0] = launch_interception_conditions.check_lic0()
+    conditions_met_vector[4] = launch_interception_conditions.check_lic4()
 
     # Populate the Preliminary Unlocking Matrix
     # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
@@ -53,29 +54,6 @@ def decide(
     result = True
     for final_unlocking_element in fuv:
         result &= final_unlocking_element
-
-    return result
-
-def check_lic0(points, parameters):
-
-    # Launch Interception Conditions 0
-    # If two consecutive points are further apart than length1, then LIC0 is true.
-    result = False
-    for i in range(len(points)-1):
-        if point_distance(points[i],points[i+1]) > parameters['length1']:
-            result = True
-
-    return result
-
-def check_lic4(points, parameters):
-    # Launch Interception Condition 4
-    # Check whether consecutive points are in several quadrants.
-    # It should be q_pts consecutive points in at least quad quadrants.
-    result = False
-    quadrants = np.array([quadrant(x) for x in points])
-    for i in range(len(points)-parameters['q_pts']+1):
-        if number_of_quadrants(quadrants[i:i+parameters['q_pts']]) > parameters['quads']:
-            result = True
 
     return result
 
@@ -124,3 +102,32 @@ def quadrant(point):
         quadrant = 1
 
     return quadrant
+
+class LaunchInterceptionConditions:
+
+    def __init__(self, points, parameters):
+        self.points = points
+        self.parameters = parameters
+
+    def check_lic0(self):
+
+        # Launch Interception Conditions 0
+        # If two consecutive points are further apart than length1, then LIC0 is true.
+        result = False
+        for i in range(len(self.points)-1):
+            if point_distance(self.points[i],self.points[i+1]) > self.parameters['length1']:
+                result = True
+
+        return result
+
+    def check_lic4(self):
+        # Launch Interception Condition 4
+        # Check whether consecutive points are in several quadrants.
+        # It should be q_pts consecutive points in at least quad quadrants.
+        result = False
+        quadrants = np.array([quadrant(x) for x in self.points])
+        for i in range(len(self.points)-self.parameters['q_pts']+1):
+            if number_of_quadrants(quadrants[i:i+self.parameters['q_pts']]) > self.parameters['quads']:
+                result = True
+
+        return result

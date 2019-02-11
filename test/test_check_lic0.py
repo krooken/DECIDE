@@ -12,7 +12,8 @@ class CheckLic0TestCase(unittest.TestCase):
 
     def run_function(self):
 
-        self.result = decide.check_lic0(self.points, self.parameters)
+        self.lics = decide.LaunchInterceptionConditions(self.points,self.parameters)
+        self.result = self.lics.check_lic0()
 
     def test_consecutive_points_apart(self):
 
