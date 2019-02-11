@@ -1,5 +1,7 @@
 import numpy as np
 
+LICS = 15
+
 def decide(
         numpoints,
         points,
@@ -10,7 +12,7 @@ def decide(
 
     # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
-    conditions_met_vector = np.full(15, False)
+    conditions_met_vector = np.full(LICS, False)
     conditions_met_vector[0] = check_lic0(points, parameters)
     conditions_met_vector[4] = check_lic4(points, parameters)
 
@@ -20,10 +22,10 @@ def decide(
     # A 1 (ANDD) at position [i,j] in the LCM means that PUM[i,j] should be set to (LICi AND LICj)
     # A 2 (ORR)at -"- should be set to (LICi OR LICj)
     # A 3 (NOTUSED) at -"- should be set to True
-    pum = np.full((15,15), False)
+    pum = np.full((LICS,LICS), False)
 
-    for row in range(15):
-        for col in range(15):
+    for row in range(LICS):
+        for col in range(LICS):
             if lcm[row,col] == 1:
                 pum[row,col] = conditions_met_vector[row] and conditions_met_vector[col]
             elif lcm[row,col] == 2:
@@ -36,12 +38,12 @@ def decide(
     # If PUV[i] is set to true, then LICi should be used when determining whether a launch should be performed.
     # If LICi is to be used, then FUV[i] is set to true if the ith row of PUM only consists of true entries.
     # If FUV[i] is set to false, then LICi shall not be used to suppress a launch, and the value of FUV[i] is true.
-    fuv = np.full(15, False)
-    for row in range(15):
+    fuv = np.full(LICS, False)
+    for row in range(LICS):
         if puv[row]:
             # This LIC shall be used, so loop through the corresponding row of PUM and check whether all values are true
             r = True
-            for col in range(15):
+            for col in range(LICS):
                 r &= pum[row,col]
             fuv[row] = r
         else:
