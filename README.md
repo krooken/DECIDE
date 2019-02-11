@@ -36,3 +36,13 @@ and
 run_tests.bat
 ```
 Alternatively, run ``python -m unittest discover`` directly in a terminal from the root folder of the Git repository.
+
+## Project guidelines
+
+All commits shall have a short and concise summary, preferably less than 70 characters.
+If additional explanation is needed, leave a blank line between the summary and the detailed explanations.
+Try to explain why a change was made, if not really obvious.
+(The 'what' and 'how' is less important since it usually is included in the commit diff.)
+
+Prefix the commit summary with ``ADD:``, ``FIX:``, ``DOC:``, or ``REFACTOR:`` if it is a new feature, bug fix, documentation, or refactor, respectively.
+Try to separate the commits into parts such that the prefix is consistent with the commit contents.
