@@ -11,6 +11,7 @@ def decide(
 ):
 
     points = np.array([Point(p) for p in points])
+    lcm = np.array([[LcmOperator.operator(c) for c in row] for row in lcm])
 
     # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
@@ -29,12 +30,7 @@ def decide(
 
     for row in range(LICS):
         for col in range(LICS):
-            if lcm[row,col] == 1:
-                pum[row,col] = conditions_met_vector[row] and conditions_met_vector[col]
-            elif lcm[row,col] == 2:
-                pum[row,col] = conditions_met_vector[row] or conditions_met_vector[col]
-            else:
-                pum[row,col] = True
+            pum[row,col] = lcm[row,col].apply(conditions_met_vector[row],conditions_met_vector[col])
 
     # Populate the Final Unlocking Vector
     # The FUV is set depending on the PUM and the Preliminary Unlocking Vector
@@ -143,3 +139,45 @@ class Point:
                 self._quadrant = 1
 
         return self._quadrant
+
+class LcmOperator:
+
+    @staticmethod
+    def operator(code):
+        if code == 1:
+            return LcmAndd()
+        if code == 2:
+            return LcmOrr()
+        if code == 3:
+            return LcmNotused()
+        return LcmOperator()
+
+    def apply(self,this,other):
+        return False
+
+    def __str__(self):
+        return '0'
+
+class LcmAndd(LcmOperator):
+
+    def apply(self,this,other):
+        return this and other
+
+    def __str__(self):
+        return '1'
+
+class LcmOrr(LcmOperator):
+
+    def apply(self,this,other):
+        return this or other
+
+    def __str__(self):
+        return '2'
+
+class LcmNotused(LcmOperator):
+
+    def apply(self,this,other):
+        return True
+
+    def __str__(self):
+        return '3'
