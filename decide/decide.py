@@ -12,28 +12,7 @@ def decide(
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
     cmv = np.full(15, False)
     cmv[0] = check_lic0(points, parameters)
-
-    # Launch Interception Condition 4
-    # Check whether consecutive points are in several quadrants.
-    # It should be q_pts consecutive points in at least quad quadrants.
-    quadrants = np.array([quadrant(x) for x in points])
-    for i in range(len(points)-parameters['q_pts']+1):
-        one = 0
-        two = 0
-        three = 0
-        four = 0
-        for j in range(parameters['q_pts']):
-            if quadrants[i+j] == 1:
-                one = 1
-            elif quadrants[i+j] == 2:
-                two = 1
-            elif quadrants[i+j] == 3:
-                three = 1
-            elif quadrants[i+j] == 4:
-                four = 1
-
-        if one + two + three + four > parameters['quads']:
-            cmv[4] = True
+    cmv[4] = check_lic4(points, parameters)
 
     # Populate the Preliminary Unlocking Matrix
     # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
@@ -82,6 +61,32 @@ def check_lic0(points, parameters):
     result = False
     for i in range(len(points)-1):
         if point_distance(points[i],points[i+1]) > parameters['length1']:
+            result = True
+
+    return result
+
+def check_lic4(points, parameters):
+    # Launch Interception Condition 4
+    # Check whether consecutive points are in several quadrants.
+    # It should be q_pts consecutive points in at least quad quadrants.
+    result = False
+    quadrants = np.array([quadrant(x) for x in points])
+    for i in range(len(points)-parameters['q_pts']+1):
+        one = 0
+        two = 0
+        three = 0
+        four = 0
+        for j in range(parameters['q_pts']):
+            if quadrants[i+j] == 1:
+                one = 1
+            elif quadrants[i+j] == 2:
+                two = 1
+            elif quadrants[i+j] == 3:
+                three = 1
+            elif quadrants[i+j] == 4:
+                four = 1
+
+        if one + two + three + four > parameters['quads']:
             result = True
 
     return result
