@@ -50,7 +50,7 @@ class DecideTestCase(unittest.TestCase):
         self.run_function()
         self.assertTrue(self.result)
 
-    def test_lic1_points_apart(self):
+    def test_lic0_points_apart(self):
         self.points[2] = (11.0, 1.0)
         self.lcm[0,0] = 1
         self.lcm[0,1] = 2
