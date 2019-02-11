@@ -68,3 +68,26 @@ def point_distance(point1,point2):
 
     # Calculate the euclidean distance between two points
     return ( (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2 )**0.5
+
+def quadrant(point):
+    # Determines which quadrant a point lies in. If it belongs to several, lower numbered quadrants have priority.
+
+    quadrant = 0
+
+    if point[0] >= 0.0 and point[1] <= 0.0:
+        # Lower right, i.e. IV
+        quadrant = 4
+
+    if point[0] <= 0.0 and point[1] <= 0.0:
+        # Lower left, i.e. III
+        quadrant = 3
+
+    if point[0] <= 0.0 and point[1] >= 0.0:
+        # Upper left, i.e. II
+        quadrant = 2
+
+    if point[0] >= 0.0 and point[1] >= 0.0:
+        # Upper right, i.e. I
+        quadrant = 1
+
+    return quadrant
