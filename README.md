@@ -22,3 +22,17 @@ in this particular launch determination. Each element of the UV indicates how to
 values to form the corresponding element of the Final Unlocking Vector (FUV), a 15-element
 vector. If, and only if, all the values in the FUV are true, should the launch-unlock signal be
 generated.
+
+## Testing
+
+The python unittest framework is used to test the code. For every function or method found in the decide folder,
+a corresponding test case file is found in the test folder. Each test case contains test methods that test different
+aspects of the function/method under test. All tests can be run by running either of
+```
+run_tests.sh
+```
+and
+```
+run_tests.bat
+```
+Alternatively, run ``python -m unittest discover`` directly in a terminal from the root folder of the Git repository.
