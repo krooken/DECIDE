@@ -89,7 +89,7 @@ class LaunchInterceptionConditions:
         # If two consecutive points are further apart than length1, then LIC0 is true.
         result = False
         for i in range(len(self.points)-1):
-            if self.points[i].point_distance(self.points[i+1]) > self.parameters['length1']:
+            if self.points[i].distance(self.points[i+1]) > self.parameters['length1']:
                 result = True
 
         return result
@@ -116,7 +116,7 @@ class Point:
     def __str__(self):
         return '''x: {x} y: {y}'''.format(x=self.x, y=self.y)
 
-    def point_distance(self,other):
+    def distance(self,other):
 
         # Calculate the euclidean distance between two points
         return ( (self.x - other.x)**2 + (self.y - other.y)**2 )**0.5
