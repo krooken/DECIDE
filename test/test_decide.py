@@ -61,6 +61,33 @@ class DecideTestCase(unittest.TestCase):
 
         self.assertTrue(self.result)
 
+    def test_lic4_two_quadrants(self):
+        # Two points in first quadrant and one in second should cause launch when q_pts == 2 and quads == 1
+        self.points[2] = (-1.0,0.0)
+        self.lcm[4,4] = 1
+        self.lcm[4,0] = 2
+        self.lcm[4,1:4] = 3
+        self.lcm[4,5:] = 3
+        self.puv[0:4] = False
+        self.puv[5:] = False
+
+        self.run_function()
+
+        self.assertTrue(self.result)
+
+    def test_lic4_one_quadrants(self):
+        # All three points in first quadrant should not cause a launch
+        self.lcm[4,4] = 1
+        self.lcm[4,0] = 2
+        self.lcm[4,1:4] = 3
+        self.lcm[4,5:] = 3
+        self.puv[0:4] = False
+        self.puv[5:] = False
+
+        self.run_function()
+
+        self.assertFalse(self.result)
+
     def run_function(self):
         # A helper function that runs the function under test with the indata from the instance variables.
         # The result is stored in an instance variable. This way interface changes are done in one place and not in

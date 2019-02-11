@@ -13,6 +13,28 @@ def decide(
     cmv = np.full(15, False)
     cmv[0] = check_lic0(points, parameters)
 
+    # Launch Interception Condition 4
+    # Check whether consecutive points are in several quadrants.
+    # It should be q_pts consecutive points in at least quad quadrants.
+    quadrants = np.array([quadrant(x) for x in points])
+    for i in range(len(points)-parameters['q_pts']+1):
+        one = 0
+        two = 0
+        three = 0
+        four = 0
+        for j in range(parameters['q_pts']):
+            if quadrants[i+j] == 1:
+                one = 1
+            elif quadrants[i+j] == 2:
+                two = 1
+            elif quadrants[i+j] == 3:
+                three = 1
+            elif quadrants[i+j] == 4:
+                four = 1
+
+        if one + two + three + four > parameters['quads']:
+            cmv[4] = True
+
     # Populate the Preliminary Unlocking Matrix
     # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
     # The LCM and the CMV decide the boolean values in the Preliminary Unlocking Matrix.
