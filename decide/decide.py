@@ -72,21 +72,7 @@ def check_lic4(points, parameters):
     result = False
     quadrants = np.array([quadrant(x) for x in points])
     for i in range(len(points)-parameters['q_pts']+1):
-        one = 0
-        two = 0
-        three = 0
-        four = 0
-        for j in range(parameters['q_pts']):
-            if quadrants[i+j] == 1:
-                one = 1
-            elif quadrants[i+j] == 2:
-                two = 1
-            elif quadrants[i+j] == 3:
-                three = 1
-            elif quadrants[i+j] == 4:
-                four = 1
-
-        if one + two + three + four > parameters['quads']:
+        if number_of_quadrants(quadrants[i:i+parameters['q_pts']]) > parameters['quads']:
             result = True
 
     return result
@@ -95,6 +81,24 @@ def point_distance(point1,point2):
 
     # Calculate the euclidean distance between two points
     return ( (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2 )**0.5
+
+def number_of_quadrants(quadrants):
+    # Calculate the number of different quadrants in the input array
+    one = 0
+    two = 0
+    three = 0
+    four = 0
+    for quadrant in quadrants:
+        if quadrant == 1:
+            one = 1
+        elif quadrant == 2:
+            two = 1
+        elif quadrant == 3:
+            three = 1
+        elif quadrant == 4:
+            four = 1
+
+    return one + two + three + four
 
 def quadrant(point):
     # Determines which quadrant a point lies in. If it belongs to several, lower numbered quadrants have priority.
