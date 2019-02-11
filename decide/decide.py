@@ -10,6 +10,8 @@ def decide(
         puv
 ):
 
+    points = np.array([Point(p) for p in points])
+
     # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
     launch_interception_conditions = LaunchInterceptionConditions(points,parameters)
@@ -57,11 +59,6 @@ def decide(
 
     return result
 
-def point_distance(point1,point2):
-
-    # Calculate the euclidean distance between two points
-    return ( (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2 )**0.5
-
 def number_of_quadrants(quadrants):
     # Calculate the number of different quadrants in the input array
     one = 0
@@ -80,29 +77,6 @@ def number_of_quadrants(quadrants):
 
     return one + two + three + four
 
-def quadrant(point):
-    # Determines which quadrant a point lies in. If it belongs to several, lower numbered quadrants have priority.
-
-    quadrant = 0
-
-    if point[0] >= 0.0 and point[1] <= 0.0:
-        # Lower right, i.e. IV
-        quadrant = 4
-
-    if point[0] <= 0.0 and point[1] <= 0.0:
-        # Lower left, i.e. III
-        quadrant = 3
-
-    if point[0] <= 0.0 and point[1] >= 0.0:
-        # Upper left, i.e. II
-        quadrant = 2
-
-    if point[0] >= 0.0 and point[1] >= 0.0:
-        # Upper right, i.e. I
-        quadrant = 1
-
-    return quadrant
-
 class LaunchInterceptionConditions:
 
     def __init__(self, points, parameters):
@@ -115,7 +89,7 @@ class LaunchInterceptionConditions:
         # If two consecutive points are further apart than length1, then LIC0 is true.
         result = False
         for i in range(len(self.points)-1):
-            if point_distance(self.points[i],self.points[i+1]) > self.parameters['length1']:
+            if self.points[i].point_distance(self.points[i+1]) > self.parameters['length1']:
                 result = True
 
         return result
@@ -125,9 +99,47 @@ class LaunchInterceptionConditions:
         # Check whether consecutive points are in several quadrants.
         # It should be q_pts consecutive points in at least quad quadrants.
         result = False
-        quadrants = np.array([quadrant(x) for x in self.points])
+        quadrants = np.array([x.quadrant() for x in self.points])
         for i in range(len(self.points)-self.parameters['q_pts']+1):
             if number_of_quadrants(quadrants[i:i+self.parameters['q_pts']]) > self.parameters['quads']:
                 result = True
 
         return result
+
+class Point:
+
+    def __init__(self, point):
+        self.x = point[0]
+        self.y = point[1]
+        self._quadrant = 0
+
+    def __str__(self):
+        return '''x: {x} y: {y}'''.format(x=self.x, y=self.y)
+
+    def point_distance(self,other):
+
+        # Calculate the euclidean distance between two points
+        return ( (self.x - other.x)**2 + (self.y - other.y)**2 )**0.5
+
+    def quadrant(self):
+        # Determines which quadrant a point lies in. If it belongs to several, lower numbered quadrants have priority.
+
+        if self._quadrant == 0:
+
+            if self.x >= 0.0 and self.y <= 0.0:
+                # Lower right, i.e. IV
+                self._quadrant = 4
+
+            if self.x <= 0.0 and self.y <= 0.0:
+                # Lower left, i.e. III
+                self._quadrant = 3
+
+            if self.x <= 0.0 and self.y >= 0.0:
+                # Upper left, i.e. II
+                self._quadrant = 2
+
+            if self.x >= 0.0 and self.y >= 0.0:
+                # Upper right, i.e. I
+                self._quadrant = 1
+
+        return self._quadrant
