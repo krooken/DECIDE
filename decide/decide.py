@@ -10,9 +10,9 @@ def decide(
 
     # Launch Interception Conditions
     # The results are stored in the Conditions Met Vector, where every element corresponds to a LIC.
-    cmv = np.full(15, False)
-    cmv[0] = check_lic0(points, parameters)
-    cmv[4] = check_lic4(points, parameters)
+    conditions_met_vector = np.full(15, False)
+    conditions_met_vector[0] = check_lic0(points, parameters)
+    conditions_met_vector[4] = check_lic4(points, parameters)
 
     # Populate the Preliminary Unlocking Matrix
     # The Logical Connector Matrix explains how pairs of LIC's should be combined into a boolena value.
@@ -25,9 +25,9 @@ def decide(
     for row in range(15):
         for col in range(15):
             if lcm[row,col] == 1:
-                pum[row,col] = cmv[row] and cmv[col]
+                pum[row,col] = conditions_met_vector[row] and conditions_met_vector[col]
             elif lcm[row,col] == 2:
-                pum[row,col] = cmv[row] or cmv[col]
+                pum[row,col] = conditions_met_vector[row] or conditions_met_vector[col]
             else:
                 pum[row,col] = True
 
